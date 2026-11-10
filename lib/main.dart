@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yahya_todo_app/provider/token_provider.dart';
+import 'package:yahya_todo_app/views/auth/login.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => TokenProvider())
+  ],
+  child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +36,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: LoginUser()
     );
   }
 }

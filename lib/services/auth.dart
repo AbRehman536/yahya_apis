@@ -1,38 +1,41 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:yahya_todo_app/models/login.dart';
-import 'package:yahya_todo_app/models/register.dart';
-import 'package:yahya_todo_app/models/user.dart';
+
+import '../models/login.dart';
+import '../models/register.dart';
+import '../models/user.dart';
 
 class AuthService{
 
-  String baseURL = "https://todo-nu-plum-19.vercel.app";
+  String baseURL = "https://todo-nu-plum-19.vercel.app/";
   ///Register User
   Future<RegisterModel> registerUser({
     required String name,
     required String email,
     required String password,
-})async{
+  })async{
     try{
       http.Response response =
       await http.post(
           Uri.parse("$baseURL/users/register"),
-          headers: {'Content-Type': 'application/json'},
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: jsonEncode({
-            name : name,
-            email : email,
-            password : password
+            "name" : name,
+            "email" : email,
+            "password" : password
           })
       );
       if(response.statusCode == 200 || response.statusCode == 201){
-        return registerModelFromJson(jsonDecode(response.body));
+        return RegisterModel.fromJson(jsonDecode(response.body));
       }
       else{
-        throw Exception("Something Went Wrong");
+        throw Exception("Failed to Register");
       }
     }catch(e){
-      throw Exception(e.toString());
+      throw e.toString();
     }
   }
   ///Login User
@@ -44,20 +47,22 @@ class AuthService{
       http.Response response =
       await http.post(
           Uri.parse("$baseURL/users/login"),
-          headers: {'Content-Type': 'application/json'},
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: jsonEncode({
-            email : email,
-            password : password
+            "email" : email,
+            "password" : password
           })
       );
       if(response.statusCode == 200 || response.statusCode == 201){
-        return loginModelFromJson(jsonDecode(response.body));
+        return LoginModel.fromJson(jsonDecode(response.body));
       }
       else{
-        throw Exception("Something Went Wrong");
+        throw Exception("Failed to Login");
       }
     }catch(e){
-      throw Exception(e.toString());
+      throw e.toString();
     }
   }
   ///Get Profile
@@ -67,17 +72,19 @@ class AuthService{
     try{
       http.Response response =
       await http.get(
-          Uri.parse("$baseURL/users/profile"),
-          headers: {'Authorization': token},
+        Uri.parse("$baseURL/users/profile"),
+        headers: {
+          'Authorization': token
+        },
       );
       if(response.statusCode == 200 || response.statusCode == 201){
-        return userModelFromJson(jsonDecode(response.body));
+        return UserModel.fromJson(jsonDecode(response.body));
       }
       else{
-        throw Exception("Something Went Wrong");
+        throw Exception("Failed to Get Profile");
       }
     }catch(e){
-      throw Exception(e.toString());
+      throw e.toString();
     }
   }
   ///Update Profile
@@ -88,20 +95,23 @@ class AuthService{
     try{
       http.Response response =
       await http.put(
-        Uri.parse("$baseURL/users/profile"),
-        headers: {'Authorization': token,'Content-Type' : 'application/json'},
-        body: jsonEncode({
-          name : name
-        })
+          Uri.parse("$baseURL/users/profile"),
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json'
+          },
+          body: jsonEncode({
+            "name" : name
+          })
       );
       if(response.statusCode == 200 || response.statusCode == 201){
         return true;
       }
       else{
-        throw Exception("Something Went Wrong");
+        throw Exception("Failed to Update Profile");
       }
     }catch(e){
-      throw Exception(e.toString());
+      throw e.toString();
     }
   }
 }
