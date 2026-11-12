@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yahya_todo_app/services/auth.dart';
 import 'package:yahya_todo_app/views/auth/register.dart';
+import 'package:yahya_todo_app/views/tasks/get_all_task.dart';
 
 import '../../provider/token_provider.dart';
 
@@ -61,7 +62,7 @@ class _LoginUserState extends State<LoginUser> {
                               content: Text("Login Successfully"),
                               actions: [
                                 TextButton(onPressed: (){
-                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> GetAllTask()));
                                 },
                                     child: Text("Okay"))
                               ],);

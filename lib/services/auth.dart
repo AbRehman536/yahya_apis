@@ -8,7 +8,7 @@ import '../models/user.dart';
 
 class AuthService{
 
-  String baseURL = "https://todo-nu-plum-19.vercel.app/";
+  String baseURL = "https://todo-nu-plum-19.vercel.app";
   ///Register User
   Future<RegisterModel> registerUser({
     required String name,
@@ -20,22 +20,21 @@ class AuthService{
       await http.post(
           Uri.parse("$baseURL/users/register"),
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type":"application/json"
           },
           body: jsonEncode({
-            "name" : name,
-            "email" : email,
-            "password" : password
+            "name": name,
+            "email": email,
+            "password": password
           })
       );
       if(response.statusCode == 200 || response.statusCode == 201){
-        return RegisterModel.fromJson(jsonDecode(response.body));
-      }
-      else{
-        throw Exception("Failed to Register");
+        return registerModelFromJson(response.body);
+      }else{
+        throw Exception("Something went wrong");
       }
     }catch(e){
-      throw e.toString();
+      throw Exception(e.toString());
     }
   }
   ///Login User
@@ -48,25 +47,24 @@ class AuthService{
       await http.post(
           Uri.parse("$baseURL/users/login"),
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type":"application/json"
           },
           body: jsonEncode({
-            "email" : email,
-            "password" : password
+            "email": email,
+            "password": password
           })
       );
       if(response.statusCode == 200 || response.statusCode == 201){
-        return LoginModel.fromJson(jsonDecode(response.body));
-      }
-      else{
-        throw Exception("Failed to Login");
+        return loginModelFromJson(response.body);
+      }else{
+        throw Exception("Something went wrong");
       }
     }catch(e){
-      throw e.toString();
+      throw Exception(e.toString());
     }
   }
   ///Get Profile
-  Future<UserModel> getUser({
+  Future<UserModel> getProfile({
     required String token,
   })async{
     try{
@@ -74,21 +72,21 @@ class AuthService{
       await http.get(
         Uri.parse("$baseURL/users/profile"),
         headers: {
-          'Authorization': token
+          "Authorization": token
         },
+
       );
       if(response.statusCode == 200 || response.statusCode == 201){
-        return UserModel.fromJson(jsonDecode(response.body));
-      }
-      else{
-        throw Exception("Failed to Get Profile");
+        return userModelFromJson(response.body);
+      }else{
+        throw Exception("Something went wrong");
       }
     }catch(e){
-      throw e.toString();
+      throw Exception(e.toString());
     }
   }
   ///Update Profile
-  Future<bool> updateUser({
+  Future<bool> updateProfile({
     required String token,
     required String name,
   })async{
@@ -97,21 +95,20 @@ class AuthService{
       await http.put(
           Uri.parse("$baseURL/users/profile"),
           headers: {
-            'Authorization': token,
-            'Content-Type': 'application/json'
+            "Authorization": token,
+            "Content-Type":"application/json"
           },
           body: jsonEncode({
-            "name" : name
+            "name": name,
           })
       );
       if(response.statusCode == 200 || response.statusCode == 201){
         return true;
-      }
-      else{
-        throw Exception("Failed to Update Profile");
+      }else{
+        throw Exception("Something went wrong");
       }
     }catch(e){
-      throw e.toString();
+      throw Exception(e.toString());
     }
   }
 }
