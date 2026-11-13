@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yahya_todo_app/services/tasks.dart';
 import 'package:yahya_todo_app/views/tasks/create_task.dart';
+import 'package:yahya_todo_app/views/tasks/filter_task.dart';
+import 'package:yahya_todo_app/views/tasks/search_task.dart';
 
 import '../../models/taskListing.dart';
 import '../../provider/token_provider.dart';
@@ -17,6 +19,14 @@ class GetAllTask extends StatelessWidget {
         title: Text("All Tasks"),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchTask()));
+          }, icon: Icon(Icons.search)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> FilterTask()));
+          }, icon: Icon(Icons.filter)),
+        ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: (){
         Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateTask()));
