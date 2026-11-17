@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yahya_todo_app/provider/token_provider.dart';
+import 'package:yahya_todo_app/provider/user_provider.dart';
 import 'package:yahya_todo_app/views/auth/login.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => TokenProvider())
+    ChangeNotifierProvider(create: (context) => TokenProvider()),
+    ChangeNotifierProvider(create: (context) => UserProvider())
   ],
   child: const MyApp()));
 }

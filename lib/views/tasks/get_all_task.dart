@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yahya_todo_app/services/tasks.dart';
+import 'package:yahya_todo_app/views/profile/get_profile.dart';
 import 'package:yahya_todo_app/views/tasks/create_task.dart';
 import 'package:yahya_todo_app/views/tasks/filter_task.dart';
 import 'package:yahya_todo_app/views/tasks/search_task.dart';
@@ -26,6 +27,9 @@ class GetAllTask extends StatelessWidget {
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=> FilterTask()));
           }, icon: Icon(Icons.filter)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetProfile()));
+          }, icon: Icon(Icons.person)),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: (){

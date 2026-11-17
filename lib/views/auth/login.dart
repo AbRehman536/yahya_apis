@@ -5,6 +5,7 @@ import 'package:yahya_todo_app/views/auth/register.dart';
 import 'package:yahya_todo_app/views/tasks/get_all_task.dart';
 
 import '../../provider/token_provider.dart';
+import '../../provider/user_provider.dart';
 
 class LoginUser extends StatefulWidget {
   const LoginUser({super.key});
@@ -20,6 +21,7 @@ class _LoginUserState extends State<LoginUser> {
   @override
   Widget build(BuildContext context) {
     var tokenProvider = Provider.of<TokenProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
@@ -51,22 +53,26 @@ class _LoginUserState extends State<LoginUser> {
                   await AuthService().loginUser(
                       email: emailController.text,
                       password: passwordController.text)
-                      .then((val){
+                      .then((val)async{
                         tokenProvider.setToken(val.token.toString());
-                        isLoading = false;
-                        setState(() {});
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: Text("Login Successfully"),
-                              actions: [
-                                TextButton(onPressed: (){
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> GetAllTask()));
-                                },
-                                    child: Text("Okay"))
-                              ],);
-                          },);
+                        await AuthService().getProfile(token: val.token.toString())
+                        .then((value){
+                          userProvider.setUser(value);
+                          isLoading = false;
+                          setState(() {});
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Text("Login Successfully"),
+                                actions: [
+                                  TextButton(onPressed: (){
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> GetAllTask()));
+                                  },
+                                      child: Text("Okay"))
+                                ],);
+                            },);
+                        });
                   });
                 }catch(e){
                   isLoading = false;
